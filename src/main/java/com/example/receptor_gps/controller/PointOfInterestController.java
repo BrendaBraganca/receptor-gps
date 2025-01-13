@@ -52,6 +52,10 @@ public class PointOfInterestController {
         }
     }
 
+    private Double distanceTwoPoints(Long x1, Long y1, Long x2, Long y2){
+        return Math.sqrt(Math.pow(x2-x1, 2) + Math.pow(y2-y1, 2));
+    }
+
     @GetMapping("/near-me")
     public ResponseEntity<List<PointOfInterest>> nearMe(@RequestParam("x") Long x, @RequestParam("y") Long y, @RequestParam("dmax") Long dmax){
         var xMin = x - dmax;
@@ -59,7 +63,7 @@ public class PointOfInterestController {
         var yMin = y - dmax;
         var yMax = y + dmax;
 
-        var body = repository.findNearMe(xMin, xMax, yMin, yMax);
+        var body = repository.findNearMe(xMin, xMax, yMin, yMax).stream().filter(p-> distanceTwoPoints(x, y, p.getX(), p.getY()) <= dmax).toList();
         return ResponseEntity.ok(body);
 
     }
