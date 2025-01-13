@@ -26,6 +26,8 @@ public class PointOfInterest {
 
     private Long y;
 
+    public PointOfInterest() {}
+
     public PointOfInterest(String name, Long x, Long y){
         this.name = name;
         this.x = x;
